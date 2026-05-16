@@ -45,10 +45,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     redirect('/post.php?id=' . $id);
 }
 
-$commentStmt = db()->prepare("SELECT c.*, u.fullname, u.avatar FROM comments c INNER JOIN users u ON u.id = c.user_id WHERE c.post_id = :post_id AND (c.status = 'approved' OR (:user_id > 0 AND c.user_id = :user_id)) ORDER BY c.created_at DESC");
+$viewerUserId = current_user_id() ?? 0;
+$commentStmt = db()->prepare("SELECT c.*, u.fullname, u.avatar FROM comments c INNER JOIN users u ON u.id = c.user_id WHERE c.post_id = :post_id AND (c.status = 'approved' OR (:viewer_user_id_check > 0 AND c.user_id = :viewer_user_id_filter)) ORDER BY c.created_at DESC");
 $commentStmt->execute([
     'post_id' => $id,
-    'user_id' => current_user_id() ?? 0,
+    'viewer_user_id_check' => $viewerUserId,
+    'viewer_user_id_filter' => $viewerUserId,
 ]);
 $comments = $commentStmt->fetchAll();
 

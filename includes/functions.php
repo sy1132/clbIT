@@ -51,7 +51,7 @@ function current_user_role(): ?string
 function current_user_name(): string
 {
     $user = current_user_row();
-    return $user ? (string) $user['full_name'] : 'Khách';
+    return $user ? (string) $user['fullname'] : 'Khách';
 }
 
 function current_user_avatar(): string

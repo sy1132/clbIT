@@ -139,20 +139,20 @@ require_once __DIR__ . '/../includes/header.php';
                 <table class="table table-clubit align-middle mb-0">
                     <thead>
                         <tr>
-                            <th>Tiêu đề</th>
-                            <th>Loại</th>
-                            <th>Người tải lên</th>
-                            <th>Ngày tạo</th>
-                            <th>Thao tác</th>
+                            <th class="text-white">Tiêu đề</th>
+                            <th class="text-white">Loại</th>
+                            <th class="text-white">Người tải lên</th>
+                            <th class="text-white">Ngày tạo</th>
+                            <th class="text-white">Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($documents as $document): ?>
                             <tr>
-                                <td><?php echo e(short_text($document['title'], 35)); ?></td>
+                                <td class="text-white"><?php echo e(short_text($document['title'], 35)); ?></td>
                                 <td><span class="badge text-bg-info"><?php echo e($document['file_type']); ?></span></td>
-                                <td><?php echo e($document['uploader_name']); ?></td>
-                                <td><?php echo e(format_datetime($document['created_at'])); ?></td>
+                                <td class="text-white"><?php echo e($document['uploader_name']); ?></td>
+                                <td class="text-white"><?php echo e(format_datetime($document['created_at'])); ?></td>
                                 <td class="d-flex gap-2 flex-wrap">
                                     <a class="btn btn-outline-primary btn-sm" href="?edit=<?php echo (int) $document['id']; ?>">Sửa</a>
                                     <a class="btn btn-outline-success btn-sm" href="<?php echo e(UPLOAD_URL . '/' . $document['file_path']); ?>" download>Tải xuống</a>

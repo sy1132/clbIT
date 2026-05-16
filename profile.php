@@ -122,7 +122,7 @@ require_once __DIR__ . '/includes/header.php';
                     <?php foreach ($registeredEvents as $event): ?>
                         <div class="border-bottom py-2">
                             <div class="fw-semibold"><?php echo e($event['event_name']); ?></div>
-                            <div class="small text-secondary">Đăng ký lúc <?php echo e(format_datetime($event['registered_at']); ?></div>
+                            <div class="small text-secondary">Đăng ký lúc <?php echo e(format_datetime($event['registered_at'])); ?></div>
                         </div>
                     <?php endforeach; ?>
                     <?php if (!$registeredEvents): ?>

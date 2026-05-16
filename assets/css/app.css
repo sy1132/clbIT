@@ -163,8 +163,20 @@ body.clubit-logged-in .soft-badge {
 }
 
 .table-clubit thead th {
-    color: inherit;
+    color: white !important;
     border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.table-clubit tbody td {
+    color: white !important;
+}
+
+body.clubit-logged-in .table-clubit tbody tr td {
+    color: white !important;
+}
+
+body.clubit-logged-in .table-clubit thead th {
+    color: white !important;
 }
 
 @media (max-width: 991px) {

@@ -74,17 +74,17 @@ require_once __DIR__ . '/../includes/header.php';
                 <table class="table table-clubit align-middle mb-0">
                     <thead>
                         <tr>
-                            <th>Họ tên</th>
-                            <th>Email</th>
-                            <th>Vai trò</th>
-                            <th>Trạng thái</th>
+                            <th class="text-white">Họ tên</th>
+                            <th class="text-white">Email</th>
+                            <th class="text-white">Vai trò</th>
+                            <th class="text-white">Trạng thái</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($recentUsers as $user): ?>
                             <tr>
-                                <td><?php echo e($user['fullname']); ?></td>
-                                <td><?php echo e($user['email']); ?></td>
+                                <td class="text-white"><?php echo e($user['fullname']); ?></td>
+                                <td class="text-white"><?php echo e($user['email']); ?></td>
                                 <td><span class="badge text-bg-primary"><?php echo e($user['role']); ?></span></td>
                                 <td><span class="badge <?php echo e(badge_class_for_status($user['status'])); ?>"><?php echo e($user['status']); ?></span></td>
                             </tr>
@@ -101,17 +101,17 @@ require_once __DIR__ . '/../includes/header.php';
                 <table class="table table-clubit align-middle mb-0">
                     <thead>
                         <tr>
-                            <th>Người đăng ký</th>
-                            <th>Sự kiện</th>
-                            <th>Thời gian</th>
+                            <th class="text-white">Người đăng ký</th>
+                            <th class="text-white">Sự kiện</th>
+                            <th class="text-white">Thời gian</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($recentRegistrations as $registration): ?>
                             <tr>
-                                <td><?php echo e($registration['full_name']); ?></td>
-                                <td><?php echo e($registration['event_name']); ?></td>
-                                <td><?php echo e(format_datetime($registration['registered_at'])); ?></td>
+                                <td class="text-white"><?php echo e($registration['full_name']); ?></td>
+                                <td class="text-white"><?php echo e($registration['event_name']); ?></td>
+                                <td class="text-white"><?php echo e(format_datetime($registration['registered_at'])); ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

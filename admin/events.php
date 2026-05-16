@@ -135,22 +135,22 @@ require_once __DIR__ . '/../includes/header.php';
                 <table class="table table-clubit align-middle mb-0">
                     <thead>
                         <tr>
-                            <th>Tên</th>
-                            <th>Địa điểm</th>
-                            <th>Đăng ký</th>
-                            <th>Trạng thái</th>
-                            <th>Ngày bắt đầu</th>
-                            <th>Thao tác</th>
+                            <th class="text-white">Tên</th>
+                            <th class="text-white">Địa điểm</th>
+                            <th class="text-white">Đăng ký</th>
+                            <th class="text-white">Trạng thái</th>
+                            <th class="text-white">Ngày bắt đầu</th>
+                            <th class="text-white">Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($events as $event): ?>
                             <tr>
-                                <td><?php echo e(short_text($event['event_name'], 35)); ?></td>
-                                <td><?php echo e($event['location']); ?></td>
-                                <td><?php echo e((string) $event['registered_count']); ?>/<?php echo e((string) $event['max_member']); ?></td>
+                                <td class="text-white"><?php echo e(short_text($event['event_name'], 35)); ?></td>
+                                <td class="text-white"><?php echo e($event['location']); ?></td>
+                                <td class="text-white"><?php echo e((string) $event['registered_count']); ?>/<?php echo e((string) $event['max_member']); ?></td>
                                 <td><span class="badge <?php echo e(badge_class_for_status($event['status'])); ?>"><?php echo e($event['status']); ?></span></td>
-                                <td><?php echo e(format_datetime($event['start_date'])); ?></td>
+                                <td class="text-white"><?php echo e(format_datetime($event['start_date'])); ?></td>
                                 <td class="d-flex gap-2 flex-wrap">
                                     <a class="btn btn-outline-primary btn-sm" href="?edit=<?php echo (int) $event['id']; ?>">Sửa</a>
                                     <form method="post" onsubmit="return confirm('Xóa sự kiện này?');">

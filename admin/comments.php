@@ -51,22 +51,22 @@ require_once __DIR__ . '/../includes/header.php';
         <table class="table table-clubit align-middle mb-0">
             <thead>
                 <tr>
-                    <th>Bài viết</th>
-                    <th>Tác giả</th>
-                    <th>Nội dung</th>
-                    <th>Trạng thái</th>
-                    <th>Ngày tạo</th>
-                    <th>Thao tác</th>
+                    <th class="text-white">Bài viết</th>
+                    <th class="text-white">Tác giả</th>
+                    <th class="text-white">Nội dung</th>
+                    <th class="text-white">Trạng thái</th>
+                    <th class="text-white">Ngày tạo</th>
+                    <th class="text-white">Thao tác</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($comments as $comment): ?>
                     <tr>
-                        <td><?php echo e(short_text($comment['post_title'], 30)); ?></td>
-                        <td><?php echo e($comment['author_name']); ?></td>
-                        <td><?php echo e(short_text($comment['content'], 70)); ?></td>
+                        <td class="text-white"><?php echo e(short_text($comment['post_title'], 30)); ?></td>
+                        <td class="text-white"><?php echo e($comment['author_name']); ?></td>
+                        <td class="text-white"><?php echo e(short_text($comment['content'], 70)); ?></td>
                         <td><span class="badge <?php echo e(badge_class_for_status($comment['status'])); ?>"><?php echo e($comment['status']); ?></span></td>
-                        <td><?php echo e(format_datetime($comment['created_at'])); ?></td>
+                        <td class="text-white"><?php echo e(format_datetime($comment['created_at'])); ?></td>
                         <td class="d-flex gap-2 flex-wrap">
                             <form method="post">
                                 <input type="hidden" name="id" value="<?php echo (int) $comment['id']; ?>">

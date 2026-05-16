@@ -154,22 +154,22 @@ require_once __DIR__ . '/../includes/header.php';
                 <table class="table table-clubit align-middle mb-0">
                     <thead>
                         <tr>
-                            <th>Tiêu đề</th>
-                            <th>Chuyên mục</th>
-                            <th>Tác giả</th>
-                            <th>Trạng thái</th>
-                            <th>Ngày tạo</th>
-                            <th>Thao tác</th>
+                            <th class="text-white">Tiêu đề</th>
+                            <th class="text-white">Chuyên mục</th>
+                            <th class="text-white">Tác giả</th>
+                            <th class="text-white">Trạng thái</th>
+                            <th class="text-white">Ngày tạo</th>
+                            <th class="text-white">Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($posts as $post): ?>
                             <tr>
-                                <td><?php echo e(short_text($post['title'], 40)); ?></td>
-                                <td><?php echo e($post['category_name']); ?></td>
-                                <td><?php echo e($post['author_name']); ?></td>
+                                <td class="text-white"><?php echo e(short_text($post['title'], 40)); ?></td>
+                                <td class="text-white"><?php echo e($post['category_name']); ?></td>
+                                <td class="text-white"><?php echo e($post['author_name']); ?></td>
                                 <td><span class="badge <?php echo e(badge_class_for_status($post['status'])); ?>"><?php echo e($post['status']); ?></span></td>
-                                <td><?php echo e(format_datetime($post['created_at'])); ?></td>
+                                <td class="text-white"><?php echo e(format_datetime($post['created_at'])); ?></td>
                                 <td class="d-flex gap-2 flex-wrap">
                                     <a class="btn btn-outline-primary btn-sm" href="?edit=<?php echo (int) $post['id']; ?>">Sửa</a>
                                     <form method="post" onsubmit="return confirm('Xóa bài viết này?');">
