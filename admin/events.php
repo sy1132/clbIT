@@ -152,6 +152,7 @@ require_once __DIR__ . '/../includes/header.php';
                                 <td><span class="badge <?php echo e(badge_class_for_status($event['status'])); ?>"><?php echo e($event['status']); ?></span></td>
                                 <td class="text-white"><?php echo e(format_datetime($event['start_date'])); ?></td>
                                 <td class="d-flex gap-2 flex-wrap">
+                                    <a class="btn btn-outline-info btn-sm" href="event-registrations.php?event_id=<?php echo (int) $event['id']; ?>"><i class="bi bi-list-check"></i> Danh sách</a>
                                     <a class="btn btn-outline-primary btn-sm" href="?edit=<?php echo (int) $event['id']; ?>">Sửa</a>
                                     <form method="post" onsubmit="return confirm('Xóa sự kiện này?');">
                                         <input type="hidden" name="action" value="delete">

@@ -32,26 +32,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         redirect('/post.php?id=' . $id);
     }
 
-    $commentStatus = current_user_role() === 'admin' ? 'approved' : 'pending';
     $commentStmt = db()->prepare('INSERT INTO comments (post_id, user_id, content, status) VALUES (:post_id, :user_id, :content, :status)');
     $commentStmt->execute([
         'post_id' => $id,
         'user_id' => current_user_id(),
         'content' => $content,
-        'status' => $commentStatus,
+        'status' => 'approved',
     ]);
 
-    flash_set('success', $commentStatus === 'approved' ? 'Bình luận đã được đăng.' : 'Bình luận đã được gửi để duyệt.');
+    flash_set('success', 'Bình luận đã được đăng.');
     redirect('/post.php?id=' . $id);
 }
 
-$viewerUserId = current_user_id() ?? 0;
-$commentStmt = db()->prepare("SELECT c.*, u.fullname, u.avatar FROM comments c INNER JOIN users u ON u.id = c.user_id WHERE c.post_id = :post_id AND (c.status = 'approved' OR (:viewer_user_id_check > 0 AND c.user_id = :viewer_user_id_filter)) ORDER BY c.created_at DESC");
-$commentStmt->execute([
-    'post_id' => $id,
-    'viewer_user_id_check' => $viewerUserId,
-    'viewer_user_id_filter' => $viewerUserId,
-]);
+$commentStmt = db()->prepare("SELECT c.*, u.fullname, u.avatar FROM comments c INNER JOIN users u ON u.id = c.user_id WHERE c.post_id = :post_id AND c.status = 'approved' ORDER BY c.created_at DESC");
+$commentStmt->execute(['post_id' => $id]);
 $comments = $commentStmt->fetchAll();
 
 require_once __DIR__ . '/includes/header.php';

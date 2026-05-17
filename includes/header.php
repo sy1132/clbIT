@@ -85,7 +85,10 @@ $bodyClass = is_logged_in() ? 'clubit-logged-in' : 'clubit-public';
                 <li class="nav-item"><a class="nav-link" href="<?php echo e(BASE_URL); ?>/posts.php">Bài viết</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?php echo e(BASE_URL); ?>/events.php">Sự kiện</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?php echo e(BASE_URL); ?>/documents.php">Tài liệu</a></li>
+                <li class="nav-item"><a class="nav-link" href="<?php echo e(BASE_URL); ?>/community.php">Cộng đồng</a></li>
                 <?php if (is_logged_in()): ?>
+                    <li class="nav-item"><a class="nav-link" href="<?php echo e(BASE_URL); ?>/my-posts.php">Bài của tôi</a></li>
+                    <li class="nav-item"><a class="nav-link btn btn-outline-primary btn-sm" href="<?php echo e(BASE_URL); ?>/create-post.php">Viết bài</a></li>
                     <li class="nav-item"><a class="nav-link" href="<?php echo e(BASE_URL); ?>/profile.php">Hồ sơ</a></li>
                     <?php if (current_user_role() === 'admin'): ?>
                         <li class="nav-item"><a class="nav-link" href="<?php echo e(BASE_URL); ?>/admin/index.php">Quản trị</a></li>

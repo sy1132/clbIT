@@ -83,8 +83,9 @@ body.clubit-logged-in .clubit-panel {
     padding: 0.4rem 0.8rem;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.1);
-    color: #cbeef0;
+    color: #0066cc;
     font-size: 0.9rem;
+    font-weight: 600;
 }
 
 .stat-tile {
@@ -177,6 +178,95 @@ body.clubit-logged-in .table-clubit tbody tr td {
 
 body.clubit-logged-in .table-clubit thead th {
     color: white !important;
+}
+
+.community-chat {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex: 0 0 430px;
+    height: 430px;
+    max-height: 430px;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: 0.25rem;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.04));
+    scrollbar-gutter: stable;
+    overscroll-behavior: contain;
+    scrollbar-width: auto;
+    scrollbar-color: rgba(54, 194, 180, 0.55) rgba(255, 255, 255, 0.04);
+}
+
+.community-chat.is-empty {
+    justify-content: center;
+}
+
+.community-empty-state {
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.community-message {
+    padding: 1rem;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    width: fit-content;
+    max-width: min(78%, 720px);
+}
+
+.community-message.is-mine {
+    background: rgba(54, 194, 180, 0.12);
+    border-color: rgba(54, 194, 180, 0.22);
+}
+
+.community-message.is-mine .d-flex {
+    flex-direction: row-reverse;
+}
+
+.community-message.is-mine {
+    margin-left: auto;
+}
+
+.community-shell {
+    border-radius: 1.5rem;
+    height: auto;
+    display: grid;
+    grid-template-rows: auto 430px auto;
+    overflow: hidden;
+}
+
+.community-header {
+    flex: 0 0 auto;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.community-composer {
+    flex: 0 0 auto;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.community-input {
+    resize: none;
+    min-height: 56px;
+}
+
+.community-chat::-webkit-scrollbar {
+    width: 14px;
+}
+
+.community-chat::-webkit-scrollbar-thumb {
+    background: rgba(54, 194, 180, 0.55);
+    border-radius: 999px;
+    border: 2px solid rgba(7, 17, 31, 0.75);
+}
+
+.community-chat::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.04);
 }
 
 @media (max-width: 991px) {

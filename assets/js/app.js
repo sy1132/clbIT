@@ -14,4 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    const communityChat = document.querySelector('[data-community-chat]');
+    if (communityChat) {
+        communityChat.scrollTop = communityChat.scrollHeight;
+    }
 });

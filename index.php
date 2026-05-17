@@ -36,34 +36,7 @@ require_once __DIR__ . '/includes/header.php';
             </div>
         </div>
         <div class="col-lg-5">
-            <div class="clubit-card p-3 p-lg-4">
-                <div class="row g-3">
-                    <div class="col-6">
-                        <div class="stat-tile">
-                            <div class="small text-white-50">Thành viên</div>
-                            <div class="fs-3 fw-bold"><?php echo e((string) $stats['members']); ?></div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="stat-tile">
-                            <div class="small text-white-50">Bài viết</div>
-                            <div class="fs-3 fw-bold"><?php echo e((string) $stats['posts']); ?></div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="stat-tile">
-                            <div class="small text-white-50">Sự kiện sắp tới</div>
-                            <div class="fs-3 fw-bold"><?php echo e((string) $stats['events']); ?></div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="stat-tile">
-                            <div class="small text-white-50">Tài liệu</div>
-                            <div class="fs-3 fw-bold"><?php echo e((string) $stats['documents']); ?></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <img src="./assets/images/pic.png" class="rounded-4" style="width: 100%; height: auto; display: block;" alt="CLB IT">
         </div>
     </div>
 </section>
@@ -128,15 +101,6 @@ require_once __DIR__ . '/includes/header.php';
             <?php endforeach; ?>
         </div>
     </div>
-    <div class="col-lg-6">
-        <h2 class="section-title mb-3">Tại sao đề tài này mạnh?</h2>
-        <div class="clubit-card p-4">
-            <ul class="mb-0 ps-3">
-                <li>Đủ luồng người dùng: xem bài viết, đăng ký sự kiện, tải tài liệu và cập nhật hồ sơ.</li>
-                <li>Đủ luồng quản trị: CRUD thành viên, bài viết, sự kiện, tài liệu và bình luận.</li>
-                <li>Dễ demo vì có dữ liệu mẫu, responsive và có thể mở rộng thêm QR, realtime hoặc chat.</li>
-            </ul>
-        </div>
-    </div>
+
 </div>
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

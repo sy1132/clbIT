@@ -28,6 +28,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         redirect('/admin/posts.php');
     }
 
+    if ($action === 'publish' && $id > 0) {
+        $updateStmt = db()->prepare('UPDATE posts SET status = :status, published_at = NOW() WHERE id = :id');
+        $updateStmt->execute(['status' => 'published', 'id' => $id]);
+        flash_set('success', 'Đã duyệt và công khai bài viết.');
+        redirect('/admin/posts.php');
+    }
+
+    if ($action === 'reject' && $id > 0) {
+        $updateStmt = db()->prepare('UPDATE posts SET status = :status WHERE id = :id');
+        $updateStmt->execute(['status' => 'draft', 'id' => $id]);
+        flash_set('success', 'Đã từ chối bài viết (chuyển sang nháp).');
+        redirect('/admin/posts.php');
+    }
+
     $title = trim($_POST['title'] ?? '');
     $excerpt = trim($_POST['excerpt'] ?? '');
     $content = trim($_POST['content'] ?? '');
@@ -171,8 +185,21 @@ require_once __DIR__ . '/../includes/header.php';
                                 <td><span class="badge <?php echo e(badge_class_for_status($post['status'])); ?>"><?php echo e($post['status']); ?></span></td>
                                 <td class="text-white"><?php echo e(format_datetime($post['created_at'])); ?></td>
                                 <td class="d-flex gap-2 flex-wrap">
-                                    <a class="btn btn-outline-primary btn-sm" href="?edit=<?php echo (int) $post['id']; ?>">Sửa</a>
-                                    <form method="post" onsubmit="return confirm('Xóa bài viết này?');">
+                                    <?php if ($post['status'] === 'pending'): ?>
+                                        <form method="post" style="display:inline;">
+                                            <input type="hidden" name="action" value="publish">
+                                            <input type="hidden" name="id" value="<?php echo (int) $post['id']; ?>">
+                                            <button class="btn btn-outline-success btn-sm">✅ Duyệt</button>
+                                        </form>
+                                        <form method="post" style="display:inline;">
+                                            <input type="hidden" name="action" value="reject">
+                                            <input type="hidden" name="id" value="<?php echo (int) $post['id']; ?>">
+                                            <button class="btn btn-outline-warning btn-sm">❌ Từ chối</button>
+                                        </form>
+                                    <?php else: ?>
+                                        <a class="btn btn-outline-primary btn-sm" href="?edit=<?php echo (int) $post['id']; ?>">Sửa</a>
+                                    <?php endif; ?>
+                                    <form method="post" onsubmit="return confirm('Xóa bài viết này?');" style="display:inline;">
                                         <input type="hidden" name="action" value="delete">
                                         <input type="hidden" name="id" value="<?php echo (int) $post['id']; ?>">
                                         <button class="btn btn-outline-danger btn-sm">Xóa</button>

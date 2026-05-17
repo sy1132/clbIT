@@ -3,6 +3,7 @@ USE clubit_db;
 
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS comments;
+DROP TABLE IF EXISTS community_messages;
 DROP TABLE IF EXISTS event_registrations;
 DROP TABLE IF EXISTS documents;
 DROP TABLE IF EXISTS events;
@@ -114,6 +115,18 @@ CREATE TABLE comments (
     INDEX idx_comments_status (status)
 ) ENGINE=InnoDB;
 
+CREATE TABLE community_messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    content VARCHAR(500) NOT NULL,
+    status ENUM('visible', 'hidden') NOT NULL DEFAULT 'visible',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_community_messages_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    INDEX idx_community_messages_status (status),
+    INDEX idx_community_messages_created_at (created_at)
+) ENGINE=InnoDB;
+
 INSERT INTO users (id, fullname, email, password, avatar, bio, skills, role, status) VALUES
 (1, 'Quản trị viên CLB', 'admin@clubit.local', '$2y$10$7JQ6mwy6WfX6Q/zc8w8vUOU4o93zA2zy4M4jW5q9uzS8aM2hVe9Fe', NULL, 'Điều phối hoạt động của câu lạc bộ.', 'PHP, MySQL, Linux', 'admin', 'active'),
 (2, 'Nguyễn Văn A', 'member@clubit.local', '$2y$10$7JQ6mwy6WfX6Q/zc8w8vUOU4o93zA2zy4M4jW5q9uzS8aM2hVe9Fe', NULL, 'Thành viên yêu thích web và AI.', 'HTML, CSS, JS, PHP', 'member', 'active');
@@ -140,3 +153,7 @@ INSERT INTO documents (id, title, description, file_path, file_type, uploaded_by
 INSERT INTO comments (id, post_id, user_id, content, status) VALUES
 (1, 1, 2, 'Bài viết ngắn gọn và dễ áp dụng cho đồ án.', 'approved'),
 (2, 2, 2, 'Mong CLB có thêm tài liệu về Git nâng cao.', 'pending');
+
+INSERT INTO community_messages (id, user_id, content, status) VALUES
+(1, 1, 'Chào mừng mọi người vào phòng chat cộng đồng của CLB IT!', 'visible'),
+(2, 2, 'Nếu ai cần hỗ trợ PHP/MySQL thì cứ nhắn ở đây nhé.', 'visible');

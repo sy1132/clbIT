@@ -7,11 +7,32 @@ require_once __DIR__ . '/includes/functions.php';
 
 require_login();
 $pageLayout = 'public';
-$pageTitle = 'Hồ sơ thành viên';
+$viewer = current_user_row();
+$profileId = (int) ($_GET['id'] ?? 0);
 
-$user = current_user_row();
+if ($profileId > 0) {
+    $profileStmt = db()->prepare('SELECT * FROM users WHERE id = :id LIMIT 1');
+    $profileStmt->execute(['id' => $profileId]);
+    $user = $profileStmt->fetch();
+    if (!$user) {
+        http_response_code(404);
+        echo 'Không tìm thấy hồ sơ.';
+        exit;
+    }
+} else {
+    $user = $viewer;
+}
+
+$isOwnProfile = (int) $viewer['id'] === (int) $user['id'];
+$pageTitle = $isOwnProfile ? 'Hồ sơ của tôi' : ('Hồ sơ của ' . $user['fullname']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!$isOwnProfile) {
+        http_response_code(403);
+        echo 'Bạn không có quyền chỉnh sửa hồ sơ này.';
+        exit;
+    }
+
     $fullname = trim($_POST['fullname'] ?? '');
     $bio = trim($_POST['bio'] ?? '');
     $skills = trim($_POST['skills'] ?? '');
@@ -58,6 +79,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $_SESSION['user']['fullname'] = $fullname;
     $_SESSION['user']['avatar'] = $avatar;
 
+    if ((int) $viewer['id'] === (int) $user['id']) {
+        $user['fullname'] = $fullname;
+        $user['bio'] = $bio;
+        $user['skills'] = $skills;
+        $user['avatar'] = $avatar;
+    }
+
     flash_set('success', 'Cập nhật hồ sơ thành công.');
     redirect('/profile.php');
 }
@@ -87,34 +115,43 @@ require_once __DIR__ . '/includes/header.php';
         </div>
     </div>
     <div class="col-lg-8">
-        <div class="clubit-card p-4 mb-4">
-            <h2 class="section-title mb-3">Cập nhật hồ sơ</h2>
-            <form method="post" enctype="multipart/form-data" class="row g-3">
-                <div class="col-md-6">
-                    <label class="form-label">Họ và tên</label>
-                    <input type="text" name="fullname" class="form-control" value="<?php echo e($user['fullname']); ?>" required>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">Ảnh đại diện</label>
-                    <input type="file" name="avatar" class="form-control" accept="image/*">
-                </div>
-                <div class="col-12">
-                    <label class="form-label">Giới thiệu</label>
-                    <textarea name="bio" class="form-control" rows="3"><?php echo e((string) $user['bio']); ?></textarea>
-                </div>
-                <div class="col-12">
-                    <label class="form-label">Kỹ năng IT</label>
-                    <input type="text" name="skills" class="form-control" value="<?php echo e((string) $user['skills']); ?>" placeholder="PHP, MySQL, UI/UX...">
-                </div>
-                <div class="col-12">
-                    <label class="form-label">Mật khẩu mới</label>
-                    <input type="password" name="password" class="form-control" placeholder="Để trống nếu không đổi">
-                </div>
-                <div class="col-12 d-grid d-md-flex justify-content-md-end">
-                    <button class="btn btn-primary">Lưu hồ sơ</button>
-                </div>
-            </form>
-        </div>
+        <?php if ($isOwnProfile): ?>
+            <div class="clubit-card p-4 mb-4">
+                <h2 class="section-title mb-3">Cập nhật hồ sơ</h2>
+                <form method="post" enctype="multipart/form-data" class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Họ và tên</label>
+                        <input type="text" name="fullname" class="form-control" value="<?php echo e($user['fullname']); ?>" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Ảnh đại diện</label>
+                        <input type="file" name="avatar" class="form-control" accept="image/*">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Giới thiệu</label>
+                        <textarea name="bio" class="form-control" rows="3"><?php echo e((string) $user['bio']); ?></textarea>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Kỹ năng IT</label>
+                        <input type="text" name="skills" class="form-control" value="<?php echo e((string) $user['skills']); ?>" placeholder="PHP, MySQL, UI/UX...">
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Mật khẩu mới</label>
+                        <input type="password" name="password" class="form-control" placeholder="Để trống nếu không đổi">
+                    </div>
+                    <div class="col-12 d-grid d-md-flex justify-content-md-end">
+                        <button class="btn btn-primary">Lưu hồ sơ</button>
+                    </div>
+                </form>
+            </div>
+        <?php else: ?>
+            <div class="clubit-card p-4 mb-4">
+                <h2 class="section-title mb-3">Thông tin hồ sơ</h2>
+                <div class="text-secondary mb-2"><?php echo nl2br(e((string) ($user['bio'] ?? 'Chưa có giới thiệu.'))); ?></div>
+                <div class="soft-badge mb-2"><?php echo e((string) ($user['skills'] ?: 'Chưa có kỹ năng')); ?></div>
+                <div class="small text-secondary">Đây là hồ sơ công khai của thành viên.</div>
+            </div>
+        <?php endif; ?>
         <div class="row g-4">
             <div class="col-lg-6">
                 <div class="clubit-card p-4 h-100">

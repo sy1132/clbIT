@@ -45,7 +45,7 @@ require_once __DIR__ . '/../includes/header.php';
 <div class="clubit-card p-4">
     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
         <h3 class="section-title mb-0">Danh sách bình luận</h3>
-        <span class="text-secondary">Duyệt spam và phản hồi của thành viên</span>
+        <span class="text-secondary">Quản lý bình luận: Chặn spam hoặc xóa nội dung không phù hợp</span>
     </div>
     <div class="table-responsive">
         <table class="table table-clubit align-middle mb-0">
@@ -70,13 +70,8 @@ require_once __DIR__ . '/../includes/header.php';
                         <td class="d-flex gap-2 flex-wrap">
                             <form method="post">
                                 <input type="hidden" name="id" value="<?php echo (int) $comment['id']; ?>">
-                                <input type="hidden" name="action" value="approved">
-                                <button class="btn btn-outline-success btn-sm">Duyệt</button>
-                            </form>
-                            <form method="post">
-                                <input type="hidden" name="id" value="<?php echo (int) $comment['id']; ?>">
                                 <input type="hidden" name="action" value="spam">
-                                <button class="btn btn-outline-warning btn-sm">Spam</button>
+                                <button class="btn btn-outline-warning btn-sm">Chặn</button>
                             </form>
                             <form method="post" onsubmit="return confirm('Xóa bình luận này?');">
                                 <input type="hidden" name="id" value="<?php echo (int) $comment['id']; ?>">
