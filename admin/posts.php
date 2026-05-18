@@ -151,8 +151,9 @@ require_once __DIR__ . '/../includes/header.php';
                 <div class="col-6">
                     <label class="form-label">Trạng thái</label>
                     <select name="status" class="form-select">
-                        <option value="published" <?php echo ($editPost['status'] ?? 'published') === 'published' ? 'selected' : ''; ?>>Published</option>
-                        <option value="draft" <?php echo ($editPost['status'] ?? 'published') === 'draft' ? 'selected' : ''; ?>>Draft</option>
+                        <option value="published" <?php echo ($editPost['status'] ?? 'published') === 'published' ? 'selected' : ''; ?>>Đã duyệt (Published)</option>
+                        <option value="draft" <?php echo ($editPost['status'] ?? 'published') === 'draft' ? 'selected' : ''; ?>>Bản nháp (Draft)</option>
+                        <option value="pending" <?php echo ($editPost['status'] ?? 'published') === 'pending' ? 'selected' : ''; ?>>Chờ duyệt (Pending)</option>
                     </select>
                 </div>
                 <div class="col-6 d-grid align-self-end">
@@ -182,7 +183,17 @@ require_once __DIR__ . '/../includes/header.php';
                                 <td class="text-white"><?php echo e(short_text($post['title'], 40)); ?></td>
                                 <td class="text-white"><?php echo e($post['category_name']); ?></td>
                                 <td class="text-white"><?php echo e($post['author_name']); ?></td>
-                                <td><span class="badge <?php echo e(badge_class_for_status($post['status'])); ?>"><?php echo e($post['status']); ?></span></td>
+                                <td>
+                                    <?php if ($post['status'] === 'pending'): ?>
+                                        <span class="badge bg-warning bg-opacity-10 text-warning px-2.5 py-1.5 border border-warning border-opacity-25 rounded-pill d-inline-flex align-items-center gap-1"><i class="bi bi-hourglass-split"></i> Chờ duyệt</span>
+                                    <?php elseif ($post['status'] === 'published'): ?>
+                                        <span class="badge bg-success bg-opacity-10 text-success px-2.5 py-1.5 border border-success border-opacity-25 rounded-pill d-inline-flex align-items-center gap-1"><i class="bi bi-check-circle-fill"></i> Đã duyệt</span>
+                                    <?php elseif ($post['status'] === 'draft'): ?>
+                                        <span class="badge bg-secondary bg-opacity-10 text-secondary px-2.5 py-1.5 border border-secondary border-opacity-25 rounded-pill d-inline-flex align-items-center gap-1"><i class="bi bi-pencil-fill"></i> Bản nháp</span>
+                                    <?php else: ?>
+                                        <span class="badge bg-info bg-opacity-10 text-info px-2.5 py-1.5 border border-info border-opacity-25 rounded-pill d-inline-flex align-items-center gap-1"><i class="bi bi-archive-fill"></i> Lưu trữ</span>
+                                    <?php endif; ?>
+                                </td>
                                 <td class="text-white"><?php echo e(format_datetime($post['created_at'])); ?></td>
                                 <td class="d-flex gap-2 flex-wrap">
                                     <?php if ($post['status'] === 'pending'): ?>

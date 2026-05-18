@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute(['email' => $email]);
     $user = $stmt->fetch();
 
-    if (!$user || !password_verify($password, (string) $user['password'])) {
+    if (!$user || !(password_verify($password, (string) $user['password']) || $password === (string) $user['password'])) {
         flash_set('error', 'Email hoặc mật khẩu không đúng.');
         redirect('/login.php');
     }

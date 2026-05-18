@@ -1,12 +1,58 @@
-:root {
-    --clubit-bg: #08111f;
+:root, [data-theme="dark"] {
+    --clubit-bg: #07111f;
+    --clubit-bg-gradient: radial-gradient(circle at top left, rgba(54, 194, 180, 0.2), transparent 25%),
+                          linear-gradient(135deg, #07111f 0%, #10213a 42%, #132b4d 100%);
     --clubit-surface: rgba(12, 21, 39, 0.84);
-    --clubit-card: rgba(255, 255, 255, 0.94);
+    --clubit-card: rgba(12, 21, 39, 0.82);
     --clubit-accent: #36c2b4;
     --clubit-accent-2: #1d4ed8;
     --clubit-text: #dfe8f3;
     --clubit-muted: #93a4ba;
     --clubit-border: rgba(255, 255, 255, 0.09);
+    
+    --clubit-nav-bg: rgba(8, 17, 31, 0.76);
+    --clubit-dropdown-bg: #0c1527;
+    --clubit-dropdown-color: #dfe8f3;
+    --clubit-dropdown-border: rgba(255, 255, 255, 0.09);
+    --clubit-dropdown-hover-bg: rgba(54, 194, 180, 0.16);
+    
+    --clubit-input-bg: rgba(255, 255, 255, 0.05);
+    --clubit-input-border: rgba(255, 255, 255, 0.09);
+    --clubit-input-color: #ffffff;
+    
+    --clubit-chat-msg-other: rgba(255, 255, 255, 0.05);
+    --clubit-chat-msg-mine: rgba(54, 194, 180, 0.12);
+    --clubit-chat-msg-other-border: rgba(255, 255, 255, 0.08);
+    --clubit-chat-msg-mine-border: rgba(54, 194, 180, 0.22);
+}
+
+[data-theme="light"] {
+    --clubit-bg: #f6fbff;
+    --clubit-bg-gradient: radial-gradient(circle at top left, rgba(54, 194, 180, 0.12), transparent 28%),
+                          radial-gradient(circle at top right, rgba(29, 78, 216, 0.1), transparent 30%),
+                          linear-gradient(180deg, #f6fbff 0%, #eef4fb 36%, #e8eef8 100%);
+    --clubit-surface: rgba(255, 255, 255, 0.9);
+    --clubit-card: rgba(255, 255, 255, 0.95);
+    --clubit-accent: #0f766e;
+    --clubit-accent-2: #1d4ed8;
+    --clubit-text: #0f172a;
+    --clubit-muted: #64748b;
+    --clubit-border: rgba(0, 0, 0, 0.08);
+    
+    --clubit-nav-bg: rgba(255, 255, 255, 0.85);
+    --clubit-dropdown-bg: #ffffff;
+    --clubit-dropdown-color: #0f172a;
+    --clubit-dropdown-border: rgba(0, 0, 0, 0.08);
+    --clubit-dropdown-hover-bg: rgba(29, 78, 216, 0.08);
+    
+    --clubit-input-bg: rgba(0, 0, 0, 0.03);
+    --clubit-input-border: rgba(0, 0, 0, 0.08);
+    --clubit-input-color: #0f172a;
+    
+    --clubit-chat-msg-other: rgba(0, 0, 0, 0.04);
+    --clubit-chat-msg-mine: rgba(29, 78, 216, 0.08);
+    --clubit-chat-msg-other-border: rgba(0, 0, 0, 0.06);
+    --clubit-chat-msg-mine-border: rgba(29, 78, 216, 0.16);
 }
 
 * {
@@ -15,18 +61,28 @@
 
 body {
     font-family: 'Be Vietnam Pro', sans-serif;
-    background:
-        radial-gradient(circle at top left, rgba(54, 194, 180, 0.18), transparent 28%),
-        radial-gradient(circle at top right, rgba(29, 78, 216, 0.18), transparent 30%),
-        linear-gradient(180deg, #f6fbff 0%, #eef4fb 36%, #e8eef8 100%);
-    color: #0f172a;
+    background: var(--clubit-bg-gradient);
+    color: var(--clubit-text);
+    transition: background 0.3s ease, color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 body.clubit-logged-in {
-    background:
-        radial-gradient(circle at top left, rgba(54, 194, 180, 0.2), transparent 25%),
-        linear-gradient(135deg, #07111f 0%, #10213a 42%, #132b4d 100%);
+    background: var(--clubit-bg-gradient);
     color: var(--clubit-text);
+}
+
+/* Sticky footer rules */
+main,
+body > .container,
+body > .container-fluid {
+    flex: 1 0 auto;
+}
+
+footer {
+    flex-shrink: 0;
 }
 
 .navbar-glass,
@@ -36,21 +92,17 @@ body.clubit-logged-in {
     backdrop-filter: blur(18px);
     border: 1px solid var(--clubit-border);
     box-shadow: 0 18px 50px rgba(2, 8, 23, 0.12);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .navbar-glass {
-    background: rgba(8, 17, 31, 0.76);
+    background: var(--clubit-nav-bg);
 }
 
 .clubit-card,
 .clubit-panel {
     background: var(--clubit-card);
     border-radius: 1.25rem;
-}
-
-body.clubit-logged-in .clubit-card,
-body.clubit-logged-in .clubit-panel {
-    background: rgba(12, 21, 39, 0.82);
     color: var(--clubit-text);
 }
 
@@ -269,6 +321,47 @@ body.clubit-logged-in .table-clubit thead th {
     background: rgba(255, 255, 255, 0.04);
 }
 
+/* Animations */
+.page-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--clubit-bg);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.page-loader.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Hover effects */
+.card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
 @media (max-width: 991px) {
     .clubit-hero {
         padding: 1.5rem;
@@ -278,3 +371,381 @@ body.clubit-logged-in .table-clubit thead th {
         position: static;
     }
 }
+
+.emoji-popup {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px) scale(0.8);
+    background: var(--clubit-dropdown-bg) !important;
+    border: 2px solid var(--clubit-accent) !important;
+    border-radius: 999px;
+    padding: 0.4rem 0.75rem;
+    display: flex;
+    gap: 0.4rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 999;
+    pointer-events: none;
+    touch-action: none;
+}
+
+.emoji-popup.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(-10px) scale(1);
+    pointer-events: auto;
+}
+
+.emoji-option {
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    user-select: none;
+    opacity: 1 !important;
+    border-radius: 50%;
+    padding: 0.2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.emoji-option.active-drag,
+.emoji-option:hover {
+    transform: scale(1.4) translateY(-8px);
+    background-color: var(--clubit-dropdown-hover-bg) !important;
+}
+
+.btn-reaction {
+    position: relative;
+    user-select: none;
+    touch-action: none;
+}
+
+.btn-reaction.reacted {
+    font-weight: bold;
+}
+
+/* Theme Elements Overrides */
+
+/* Form controls (Inputs, Select, Textarea) */
+.form-control, .form-select {
+    background-color: var(--clubit-input-bg) !important;
+    border-color: var(--clubit-input-border) !important;
+    color: var(--clubit-input-color) !important;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.form-select option {
+    background-color: var(--clubit-dropdown-bg) !important;
+    color: var(--clubit-dropdown-color) !important;
+}
+
+.form-control::placeholder {
+    color: var(--clubit-muted) !important;
+    opacity: 0.75;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: var(--clubit-input-bg) !important;
+    color: var(--clubit-input-color) !important;
+    border-color: var(--clubit-accent) !important;
+    box-shadow: 0 0 0 0.25rem rgba(54, 194, 180, 0.25) !important;
+}
+
+/* Dropdown menus */
+.dropdown-menu {
+    background-color: var(--clubit-dropdown-bg) !important;
+    border: 1px solid var(--clubit-dropdown-border) !important;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.dropdown-item {
+    color: var(--clubit-dropdown-color) !important;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    background-color: var(--clubit-dropdown-hover-bg) !important;
+    color: var(--clubit-dropdown-color) !important;
+}
+
+.dropdown-divider {
+    border-top: 1px solid var(--clubit-dropdown-border) !important;
+}
+
+/* Comment bubbles: PHP and AJAX dynamic comment bubbles */
+.bg-dark.bg-opacity-50,
+.bg-dark.text-white.rounded-3,
+div[style*="background: rgba(255, 255, 255, 0.05) !important;"],
+.bg-dark.text-white.rounded-3[style] {
+    background-color: var(--clubit-chat-msg-other) !important;
+    color: var(--clubit-text) !important;
+    border: 1px solid var(--clubit-chat-msg-other-border) !important;
+}
+
+/* Chat shell and messages in dynamic sidebar */
+.community-shell {
+    border: 1px solid var(--clubit-border) !important;
+    background: var(--clubit-card) !important;
+}
+
+.community-header, .community-composer {
+    background: transparent !important;
+    border-color: var(--clubit-border) !important;
+}
+
+.community-message {
+    background: var(--clubit-chat-msg-other) !important;
+    border: 1px solid var(--clubit-chat-msg-other-border) !important;
+    color: var(--clubit-text) !important;
+}
+
+.community-message.is-mine {
+    background: var(--clubit-chat-msg-mine) !important;
+    border-color: var(--clubit-chat-msg-mine-border) !important;
+    color: var(--clubit-text) !important;
+}
+
+/* Community chat scrollbar track & thumb */
+.community-chat::-webkit-scrollbar-thumb {
+    background: var(--clubit-accent) !important;
+    border-color: var(--clubit-bg) !important;
+}
+
+.community-chat::-webkit-scrollbar-track {
+    background: var(--clubit-input-bg) !important;
+}
+
+
+/* Sidebar links and background adjustment in light mode */
+[data-theme="light"] .sidebar-link {
+    color: var(--clubit-text) !important;
+}
+
+[data-theme="light"] .sidebar-link:hover,
+[data-theme="light"] .sidebar-link.active {
+    background-color: var(--clubit-dropdown-hover-bg) !important;
+    color: var(--clubit-accent) !important;
+}
+
+[data-theme="light"] .sidebar-glass {
+    background: var(--clubit-card) !important;
+}
+
+/* Light mode text contrast overrides inside card containers */
+[data-theme="light"] .clubit-card .text-white,
+[data-theme="light"] .clubit-card .text-white-50,
+[data-theme="light"] .clubit-card .text-secondary,
+[data-theme="light"] .clubit-card .prose,
+[data-theme="light"] .clubit-card .lead,
+[data-theme="light"] .clubit-card h5,
+[data-theme="light"] .clubit-card h1,
+[data-theme="light"] .clubit-card .fw-bold {
+    color: var(--clubit-text) !important;
+    opacity: 1 !important;
+}
+
+[data-theme="light"] .clubit-card .text-muted,
+[data-theme="light"] .clubit-card .small.text-secondary {
+    color: var(--clubit-muted) !important;
+}
+
+/* Hero section light theme styles */
+[data-theme="light"] .clubit-hero {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(238, 244, 251, 0.9)),
+                radial-gradient(circle at top right, rgba(54, 194, 180, 0.15), transparent 28%) !important;
+    color: var(--clubit-text) !important;
+    box-shadow: 0 15px 35px rgba(29, 78, 216, 0.05);
+}
+
+[data-theme="light"] .clubit-hero h1,
+[data-theme="light"] .clubit-hero p {
+    color: var(--clubit-text) !important;
+}
+
+[data-theme="light"] .stat-tile {
+    background: rgba(29, 78, 216, 0.04) !important;
+    border-color: rgba(29, 78, 216, 0.08) !important;
+}
+
+/* Tables text in light theme */
+[data-theme="light"] .table-clubit thead th,
+[data-theme="light"] .table-clubit tbody td {
+    color: var(--clubit-text) !important;
+    border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+
+/* Light mode navbar link text and hover colors */
+[data-theme="light"] .navbar-glass .navbar-brand,
+[data-theme="light"] .navbar-glass .nav-link {
+    color: var(--clubit-text) !important;
+    opacity: 1 !important;
+}
+
+[data-theme="light"] .navbar-glass .nav-link:hover,
+[data-theme="light"] .navbar-glass .nav-link:focus {
+    color: var(--clubit-accent) !important;
+}
+
+[data-theme="light"] .navbar-glass .navbar-toggler {
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme="light"] .navbar-glass .navbar-toggler-icon {
+    filter: invert(1) !important;
+}
+
+/* Ensure navbar user dropdown trigger arrow color in light mode */
+[data-theme="light"] .navbar-glass .dropdown-toggle::after {
+    border-top-color: var(--clubit-text) !important;
+}
+
+/* Infinite Scroll Fly-Up Animation */
+@keyframes flyUp {
+    0% {
+        opacity: 0;
+        transform: translateY(40px) scale(0.97);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.fly-up-item {
+    opacity: 0;
+    animation: flyUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Multiple Image Grid layout (Facebook-style) */
+.post-media-grid {
+    display: grid;
+    gap: 8px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.post-media-grid.grid-1 {
+    grid-template-columns: 1fr;
+}
+.post-media-grid.grid-2 {
+    grid-template-columns: 1fr 1fr;
+}
+.post-media-grid.grid-3 {
+    grid-template-columns: 1.2fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+.post-media-grid.grid-3 .grid-item:first-child {
+    grid-row: span 2;
+}
+.post-media-grid.grid-4 {
+    grid-template-columns: 1.2fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+}
+.post-media-grid.grid-4 .grid-item:first-child {
+    grid-row: span 3;
+}
+
+.post-media-grid .grid-item {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 120px;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.post-media-grid .grid-item img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease;
+}
+
+.post-media-grid .grid-item img:hover {
+    transform: scale(1.02);
+}
+
+.post-media-grid .grid-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.5rem;
+    pointer-events: none;
+}
+
+/* Document attachments styles */
+.post-attachments {
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    padding: 1rem;
+}
+
+[data-theme="light"] .post-attachments {
+    background: rgba(0, 0, 0, 0.02) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+.post-attachments .bi-file-earmark-pdf-fill {
+    color: #ff5c5c !important;
+}
+.post-attachments .bi-file-earmark-word-fill {
+    color: #4a90e2 !important;
+}
+.post-attachments .bi-file-earmark-slides-fill {
+    color: #f5a623 !important;
+}
+.post-attachments .bi-file-earmark-excel-fill {
+    color: #2ecc71 !important;
+}
+.post-attachments .bi-file-earmark-zip-fill {
+    color: #3498db !important;
+}
+
+/* Compact Mode styles */
+[data-compact="true"] body {
+    font-size: 0.92rem;
+}
+[data-compact="true"] .clubit-card,
+[data-compact="true"] .clubit-panel,
+[data-compact="true"] .sidebar-glass {
+    padding: 1.15rem !important;
+    border-radius: 0.85rem !important;
+}
+[data-compact="true"] .py-4 {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+}
+[data-compact="true"] .mb-4 {
+    margin-bottom: 0.8rem !important;
+}
+[data-compact="true"] .gap-4 {
+    gap: 0.75rem !important;
+}
+[data-compact="true"] .g-4,
+[data-compact="true"] .gy-4,
+[data-compact="true"] .gx-4 {
+    --bs-gutter-x: 1rem !important;
+    --bs-gutter-y: 1rem !important;
+}
+[data-compact="true"] .post-media-grid {
+    gap: 6px !important;
+}
+[data-compact="true"] .post-reactions {
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+

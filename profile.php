@@ -133,11 +133,11 @@ require_once __DIR__ . '/includes/header.php';
                     </div>
                     <div class="col-12">
                         <label class="form-label">Kỹ năng IT</label>
-                        <input type="text" name="skills" class="form-control" value="<?php echo e((string) $user['skills']); ?>" placeholder="PHP, MySQL, UI/UX...">
+                        <input type="text" name="skills" class="form-control" value="<?php echo e((string) $user['skills']); ?>" placeholder="PHP, MySQL, UI/UX..." autocomplete="off">
                     </div>
                     <div class="col-12">
                         <label class="form-label">Mật khẩu mới</label>
-                        <input type="password" name="password" class="form-control" placeholder="Để trống nếu không đổi">
+                        <input type="password" name="password" class="form-control" placeholder="Để trống nếu không đổi" autocomplete="new-password">
                     </div>
                     <div class="col-12 d-grid d-md-flex justify-content-md-end">
                         <button class="btn btn-primary">Lưu hồ sơ</button>

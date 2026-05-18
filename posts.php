@@ -16,8 +16,9 @@ $offset = ($page - 1) * $perPage;
 
 $categories = db()->query('SELECT id, name FROM categories ORDER BY name ASC')->fetchAll();
 
-$where = ["p.status = 'published'"];
-$params = [];
+$currentUserId = current_user_id() ?? 0;
+$where = ["p.status = 'published'", "(p.privacy = 'public' OR p.user_id = :current_user_id)"];
+$params = ['current_user_id' => $currentUserId];
 
 if ($search !== '') {
     $where[] = '(p.title LIKE :search OR p.excerpt LIKE :search OR p.content LIKE :search)';
@@ -35,7 +36,7 @@ $countStmt->execute($params);
 $totalItems = (int) $countStmt->fetchColumn();
 $totalPages = max(1, (int) ceil($totalItems / $perPage));
 
-$listSql = "SELECT p.id, p.title, p.slug, p.excerpt, p.image, p.published_at, c.name AS category_name, u.fullname AS author_name
+$listSql = "SELECT p.id, p.title, p.slug, p.excerpt, p.image, p.images, p.published_at, p.privacy, c.name AS category_name, u.fullname AS author_name
             FROM posts p
             INNER JOIN categories c ON c.id = p.category_id
             INNER JOIN users u ON u.id = p.user_id
@@ -80,11 +81,15 @@ require_once __DIR__ . '/includes/header.php';
 </div>
 
 <div class="row g-4">
-    <?php foreach ($posts as $post): ?>
+    <?php foreach ($posts as $index => $post): ?>
         <div class="col-md-6 col-xl-4">
-            <div class="clubit-card h-100 p-3 card-hover">
-                <?php if (!empty($post['image'])): ?>
-                    <img src="<?php echo e(UPLOAD_URL . '/' . $post['image']); ?>" class="card-media mb-3" alt="<?php echo e($post['title']); ?>">
+            <div class="clubit-card h-100 p-3 card-hover animate-on-scroll" style="transition-delay: <?php echo $index * 50; ?>ms;">
+                <?php 
+                $postImages = !empty($post['images']) ? json_decode($post['images'], true) : [];
+                $displayImage = !empty($postImages) ? $postImages[0] : (!empty($post['image']) ? $post['image'] : '');
+                if (!empty($displayImage)): 
+                ?>
+                    <img src="<?php echo e(UPLOAD_URL . '/' . $displayImage); ?>" class="card-media mb-3" alt="<?php echo e($post['title']); ?>">
                 <?php else: ?>
                     <div class="card-media mb-3 d-flex align-items-center justify-content-center text-white"><i class="bi bi-file-earmark-richtext fs-1"></i></div>
                 <?php endif; ?>
@@ -93,7 +98,14 @@ require_once __DIR__ . '/includes/header.php';
                 <p class="text-secondary mb-3"><?php echo e(short_text($post['excerpt'], 120)); ?></p>
                 <div class="small text-secondary d-flex justify-content-between align-items-center">
                     <span><?php echo e($post['author_name']); ?></span>
-                    <span><?php echo e(format_date($post['published_at'])); ?></span>
+                    <span>
+                        <?php if (($post['privacy'] ?? 'public') === 'private'): ?>
+                            <i class="bi bi-lock-fill text-warning me-1" title="Riêng tư"></i>
+                        <?php else: ?>
+                            <i class="bi bi-globe-americas text-primary me-1" title="Công khai"></i>
+                        <?php endif; ?>
+                        <?php echo e(format_date($post['published_at'])); ?>
+                    </span>
                 </div>
                 <a href="<?php echo e(BASE_URL); ?>/post.php?id=<?php echo (int) $post['id']; ?>" class="btn btn-outline-primary btn-sm mt-3">Xem chi tiết</a>
             </div>

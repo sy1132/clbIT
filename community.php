@@ -87,7 +87,7 @@ require_once __DIR__ . '/includes/header.php';
         <span class="soft-badge"><?php echo count($messages); ?> tin nhắn</span>
     </div>
 
-    <div class="community-chat px-4 py-4 <?php echo empty($messages) ? 'is-empty' : ''; ?>" data-community-chat>
+    <div class="community-chat px-4 py-4 <?php echo empty($messages) ? 'is-empty' : ''; ?>" data-community-chat id="community-chat-container" data-last-id="<?php echo !empty($messages) ? end($messages)['id'] : 0; ?>">
         <?php if (empty($messages)): ?>
             <div class="community-empty-state text-center text-secondary">Chưa có tin nhắn nào. Hãy mở lời trước!</div>
         <?php else: ?>
@@ -121,7 +121,7 @@ require_once __DIR__ . '/includes/header.php';
 
     <div class="community-composer border-top border-white border-opacity-10 px-4 py-3">
         <?php if (is_logged_in()): ?>
-            <form method="post" class="d-flex gap-2 align-items-end">
+            <form id="form-chat" method="post" class="d-flex gap-2 align-items-end">
                 <textarea name="content" class="form-control community-input" rows="2" maxlength="500" placeholder="Nhập tin nhắn..." required></textarea>
                 <button class="btn btn-primary px-4">Gửi</button>
             </form>
