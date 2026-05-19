@@ -19,8 +19,9 @@ if ($type !== '') {
 }
 
 if ($search !== '') {
-    $where[] = '(title LIKE :search OR description LIKE :search)';
-    $params['search'] = '%' . $search . '%';
+    $where[] = '(title LIKE :search1 OR description LIKE :search2)';
+    $params['search1'] = '%' . $search . '%';
+    $params['search2'] = '%' . $search . '%';
 }
 
 $whereSql = implode(' AND ', $where);

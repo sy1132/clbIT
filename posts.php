@@ -21,8 +21,10 @@ $where = ["p.status = 'published'", "(p.privacy = 'public' OR p.user_id = :curre
 $params = ['current_user_id' => $currentUserId];
 
 if ($search !== '') {
-    $where[] = '(p.title LIKE :search OR p.excerpt LIKE :search OR p.content LIKE :search)';
-    $params['search'] = '%' . $search . '%';
+    $where[] = '(p.title LIKE :search1 OR p.excerpt LIKE :search2 OR p.content LIKE :search3)';
+    $params['search1'] = '%' . $search . '%';
+    $params['search2'] = '%' . $search . '%';
+    $params['search3'] = '%' . $search . '%';
 }
 
 if ($categoryId > 0) {

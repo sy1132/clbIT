@@ -13,8 +13,10 @@ $where = ["e.status = 'published'"];
 $params = [];
 
 if ($search !== '') {
-    $where[] = '(e.event_name LIKE :search OR e.description LIKE :search OR e.location LIKE :search)';
-    $params['search'] = '%' . $search . '%';
+    $where[] = '(e.event_name LIKE :search1 OR e.description LIKE :search2 OR e.location LIKE :search3)';
+    $params['search1'] = '%' . $search . '%';
+    $params['search2'] = '%' . $search . '%';
+    $params['search3'] = '%' . $search . '%';
 }
 
 $whereSql = implode(' AND ', $where);
