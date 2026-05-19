@@ -104,84 +104,144 @@ $myPosts = $myPostsStmt->fetchAll();
 
 require_once __DIR__ . '/includes/header.php';
 ?>
-<div class="row g-4">
-    <div class="col-lg-4">
-        <div class="clubit-card p-4 text-center">
-            <img src="<?php echo e($user['avatar'] ? UPLOAD_URL . '/' . $user['avatar'] : BASE_URL . '/assets/images/default-avatar.svg'); ?>" alt="Avatar" width="140" height="140" class="rounded-circle mb-3" style="object-fit:cover;">
-            <h3 class="fw-bold mb-1"><?php echo e($user['fullname']); ?></h3>
-            <div class="text-secondary mb-3"><?php echo e($user['email']); ?></div>
-            <div class="soft-badge mb-2"><?php echo e($user['role']); ?></div>
-            <div class="small text-secondary">Tham gia từ <?php echo e(format_date($user['created_at'])); ?></div>
+<div class="row g-4 animate-on-scroll">
+    <?php if ($isOwnProfile): ?>
+        <div class="col-lg-3">
+            <!-- Sidebar Navigation for Settings -->
+            <div class="clubit-card p-3 sidebar-glass">
+                <div class="d-flex align-items-center gap-3 p-3 border-bottom border-white border-opacity-10 mb-3">
+                    <img src="<?php echo e($viewer['avatar'] ? UPLOAD_URL . '/' . $viewer['avatar'] : BASE_URL . '/assets/images/default-avatar.svg'); ?>" alt="Avatar" width="48" height="48" class="rounded-circle" style="object-fit: cover;">
+                    <div>
+                        <h6 class="fw-bold mb-0"><?php echo e($viewer['fullname']); ?></h6>
+                        <span class="small text-secondary"><?php echo e($viewer['role']); ?></span>
+                    </div>
+                </div>
+                <div class="d-grid gap-1">
+                    <a href="<?php echo e(BASE_URL); ?>/settings.php" class="sidebar-link"><i class="bi bi-sliders me-2"></i> Cấu hình chung</a>
+                    <a href="<?php echo e(BASE_URL); ?>/profile.php" class="sidebar-link active"><i class="bi bi-person me-2"></i> Hồ sơ</a>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="col-lg-8">
-        <?php if ($isOwnProfile): ?>
+        
+        <div class="col-lg-9">
+            <!-- Profile Update Panel -->
             <div class="clubit-card p-4 mb-4">
-                <h2 class="section-title mb-3">Cập nhật hồ sơ</h2>
+                <h4 class="fw-bold mb-3"><i class="bi bi-person-gear text-primary me-2"></i> Cập nhật hồ sơ</h4>
+                <p class="text-secondary small mb-4">Cập nhật thông tin cá nhân, ảnh đại diện và kỹ năng của bạn.</p>
+                
                 <form method="post" enctype="multipart/form-data" class="row g-3">
                     <div class="col-md-6">
-                        <label class="form-label">Họ và tên</label>
+                        <label class="form-label text-secondary small fw-semibold">Họ và tên</label>
                         <input type="text" name="fullname" class="form-control" value="<?php echo e($user['fullname']); ?>" required>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Ảnh đại diện</label>
+                        <label class="form-label text-secondary small fw-semibold">Ảnh đại diện</label>
                         <input type="file" name="avatar" class="form-control" accept="image/*">
                     </div>
                     <div class="col-12">
-                        <label class="form-label">Giới thiệu</label>
+                        <label class="form-label text-secondary small fw-semibold">Giới thiệu</label>
                         <textarea name="bio" class="form-control" rows="3"><?php echo e((string) $user['bio']); ?></textarea>
                     </div>
                     <div class="col-12">
-                        <label class="form-label">Kỹ năng IT</label>
+                        <label class="form-label text-secondary small fw-semibold">Kỹ năng IT</label>
                         <input type="text" name="skills" class="form-control" value="<?php echo e((string) $user['skills']); ?>" placeholder="PHP, MySQL, UI/UX..." autocomplete="off">
                     </div>
                     <div class="col-12">
-                        <label class="form-label">Mật khẩu mới</label>
+                        <label class="form-label text-secondary small fw-semibold">Mật khẩu mới</label>
                         <input type="password" name="password" class="form-control" placeholder="Để trống nếu không đổi" autocomplete="new-password">
                     </div>
-                    <div class="col-12 d-grid d-md-flex justify-content-md-end">
-                        <button class="btn btn-primary">Lưu hồ sơ</button>
+                    <div class="col-12 text-end mt-4">
+                        <button class="btn btn-primary rounded-pill px-4"><i class="bi bi-check-circle me-2"></i> Lưu hồ sơ</button>
                     </div>
                 </form>
             </div>
-        <?php else: ?>
-            <div class="clubit-card p-4 mb-4">
-                <h2 class="section-title mb-3">Thông tin hồ sơ</h2>
-                <div class="text-secondary mb-2"><?php echo nl2br(e((string) ($user['bio'] ?? 'Chưa có giới thiệu.'))); ?></div>
-                <div class="soft-badge mb-2"><?php echo e((string) ($user['skills'] ?: 'Chưa có kỹ năng')); ?></div>
-                <div class="small text-secondary">Đây là hồ sơ công khai của thành viên.</div>
-            </div>
-        <?php endif; ?>
-        <div class="row g-4">
-            <div class="col-lg-6">
-                <div class="clubit-card p-4 h-100">
-                    <h3 class="section-title mb-3">Lịch sử tham gia</h3>
-                    <?php foreach ($registeredEvents as $event): ?>
-                        <div class="border-bottom py-2">
-                            <div class="fw-semibold"><?php echo e($event['event_name']); ?></div>
-                            <div class="small text-secondary">Đăng ký lúc <?php echo e(format_datetime($event['registered_at'])); ?></div>
-                        </div>
-                    <?php endforeach; ?>
-                    <?php if (!$registeredEvents): ?>
-                        <div class="text-secondary">Chưa có hoạt động nào.</div>
-                    <?php endif; ?>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="clubit-card p-4 h-100">
-                    <h3 class="section-title mb-3">Bài viết của tôi</h3>
-                    <?php foreach ($myPosts as $post): ?>
-                        <div class="border-bottom py-2">
-                            <div class="fw-semibold"><?php echo e($post['title']); ?></div>
-                            <div class="small text-secondary"><?php echo e($post['status']); ?> | <?php echo e(format_datetime($post['published_at'] ?? null)); ?></div>
-                        </div>
-                    <?php endforeach; ?>
-                    <?php if (!$myPosts): ?>
-                        <div class="text-secondary">Chưa có bài viết nào.</div>
-                    <?php endif; ?>
+    <?php else: ?>
+        <div class="col-lg-3">
+            <!-- Public User Info Sidebar -->
+            <div class="clubit-card p-4 text-center">
+                <img src="<?php echo e($user['avatar'] ? UPLOAD_URL . '/' . $user['avatar'] : BASE_URL . '/assets/images/default-avatar.svg'); ?>" alt="Avatar" width="120" height="120" class="rounded-circle mb-3 border border-3 border-primary border-opacity-25" style="object-fit:cover;">
+                <h4 class="fw-bold mb-1"><?php echo e($user['fullname']); ?></h4>
+                <div class="text-secondary small mb-3"><?php echo e($user['email']); ?></div>
+                <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill small mb-3 d-inline-block"><?php echo e($user['role']); ?></span>
+                <div class="small text-secondary border-top border-white border-opacity-10 pt-3 mt-2">
+                    Tham gia từ<br><span class="fw-semibold text-white"><?php echo e(format_date($user['created_at'])); ?></span>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+        
+        <div class="col-lg-9">
+            <!-- Public Bio Panel -->
+            <div class="clubit-card p-4 mb-4">
+                <h4 class="fw-bold mb-3"><i class="bi bi-person-badge text-primary me-2"></i> Thông tin hồ sơ</h4>
+                <p class="text-secondary small mb-4">Đây là hồ sơ công khai của thành viên.</p>
+                
+                <div class="mb-4">
+                    <label class="form-label text-secondary small fw-semibold d-block">Giới thiệu</label>
+                    <div class="p-3 rounded-4 bg-dark bg-opacity-25 border border-white border-opacity-10 text-white">
+                        <?php echo nl2br(e((string) ($user['bio'] ?? 'Chưa có giới thiệu.'))); ?>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="form-label text-secondary small fw-semibold d-block">Kỹ năng IT</label>
+                    <div class="d-flex flex-wrap gap-2">
+                        <?php if ($user['skills']): ?>
+                            <?php foreach (explode(',', $user['skills']) as $skill): ?>
+                                <span class="badge bg-light bg-opacity-10 text-light px-3 py-2 rounded-pill small"><?php echo e(trim($skill)); ?></span>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <span class="text-secondary small italic">Chưa cập nhật kỹ năng.</span>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+    <?php endif; ?>
+
+            <!-- Common Activity & Posts Section -->
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="clubit-card p-4 h-100">
+                        <h5 class="fw-bold mb-3"><i class="bi bi-calendar-event text-primary me-2"></i> Lịch sử tham gia</h5>
+                        <div class="d-grid gap-3">
+                            <?php foreach ($registeredEvents as $event): ?>
+                                <div class="p-3 rounded-4 bg-dark bg-opacity-25 border border-white border-opacity-10">
+                                    <div class="fw-bold text-white small mb-1"><?php echo e($event['event_name']); ?></div>
+                                    <div class="text-secondary small d-flex align-items-center gap-1">
+                                        <i class="bi bi-clock small"></i> Đăng ký: <?php echo e(format_datetime($event['registered_at'])); ?>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                            <?php if (!$registeredEvents): ?>
+                                <div class="text-secondary small p-3 rounded-4 bg-dark bg-opacity-25 border border-white border-opacity-10 text-center">
+                                    Chưa có hoạt động nào.
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="clubit-card p-4 h-100">
+                        <h5 class="fw-bold mb-3"><i class="bi bi-file-earmark-post text-primary me-2"></i> Bài viết của <?php echo $isOwnProfile ? 'tôi' : 'thành viên'; ?></h5>
+                        <div class="d-grid gap-3">
+                            <?php foreach ($myPosts as $post): ?>
+                                <a href="<?php echo e(BASE_URL); ?>/post.php?id=<?php echo (int) $post['id']; ?>" class="p-3 rounded-4 bg-dark bg-opacity-25 border border-white border-opacity-10 text-decoration-none d-block hover-lift">
+                                    <div class="fw-bold text-white small mb-1"><?php echo e($post['title']); ?></div>
+                                    <div class="text-secondary small d-flex align-items-center gap-2 justify-content-between">
+                                        <span><i class="bi bi-info-circle small"></i> <?php echo e($post['status']); ?></span>
+                                        <span><?php echo e(format_datetime($post['published_at'] ?? null)); ?></span>
+                                    </div>
+                                </a>
+                            <?php endforeach; ?>
+                            <?php if (!$myPosts): ?>
+                                <div class="text-secondary small p-3 rounded-4 bg-dark bg-opacity-25 border border-white border-opacity-10 text-center">
+                                    Chưa có bài viết nào.
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- Close col-lg-9 -->
+</div> <!-- Close row -->
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

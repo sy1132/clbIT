@@ -25,7 +25,7 @@ require_once __DIR__ . '/includes/header.php';
                 </div>
             </div>
             <div class="d-grid gap-1">
-                <a href="#general" class="sidebar-link active"><i class="bi bi-sliders me-2"></i> Cấu hình chung</a>
+                <a href="<?php echo e(BASE_URL); ?>/settings.php" class="sidebar-link active"><i class="bi bi-sliders me-2"></i> Cấu hình chung</a>
                 <a href="<?php echo e(BASE_URL); ?>/profile.php" class="sidebar-link"><i class="bi bi-person me-2"></i> Hồ sơ</a>
             </div>
         </div>
